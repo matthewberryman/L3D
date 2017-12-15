@@ -176,7 +176,7 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, jboolean isDC, int tblno,
 				  SIZEOF(d_derived_tbl));
   dtbl = *pdtbl;
   dtbl->pub = htbl;		/* fill in back link */
-  
+
   /* Figure C.1: make table of Huffman code length for each symbol */
 
   p = 0;
@@ -189,10 +189,10 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, jboolean isDC, int tblno,
   }
   huffsize[p] = 0;
   numsymbols = p;
-  
+
   /* Figure C.2: generate the codes themselves */
   /* We also validate that the counts represent a legal Huffman code tree. */
-  
+
   code = 0;
   si = huffsize[0];
   p = 0;
@@ -450,11 +450,7 @@ static const int extend_test[16] =   /* entry n is 2**(n-1) */
   { 0, 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080,
     0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000 };
 
-static const int extend_offset[16] = /* entry n is (-1 << n) + 1 */
-  { 0, ((-1)<<1) + 1, ((-1)<<2) + 1, ((-1)<<3) + 1, ((-1)<<4) + 1,
-    ((-1)<<5) + 1, ((-1)<<6) + 1, ((-1)<<7) + 1, ((-1)<<8) + 1,
-    ((-1)<<9) + 1, ((-1)<<10) + 1, ((-1)<<11) + 1, ((-1)<<12) + 1,
-    ((-1)<<13) + 1, ((-1)<<14) + 1, ((-1)<<15) + 1 };
+static const int extend_offset[16] = { 0, -1, -3, -7, -15, -31, -63, -127, -255, -511, -1023, -2047, -4095, -8191, -16383, -32767};
 
 #endif /* AVOID_TABLES */
 
@@ -570,10 +566,10 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	/* Since zeroes are skipped, output area must be cleared beforehand */
 	for (k = 1; k < DCTSIZE2; k++) {
 	  HUFF_DECODE(s, br_state, actbl, return FALSE, label2);
-      
+
 	  r = s >> 4;
 	  s &= 15;
-      
+
 	  if (s) {
 	    k += r;
 	    CHECK_BIT_BUFFER(br_state, s, return FALSE);
@@ -597,10 +593,10 @@ decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
 	/* In this path we just discard the values */
 	for (k = 1; k < DCTSIZE2; k++) {
 	  HUFF_DECODE(s, br_state, actbl, return FALSE, label3);
-      
+
 	  r = s >> 4;
 	  s &= 15;
-      
+
 	  if (s) {
 	    k += r;
 	    CHECK_BIT_BUFFER(br_state, s, return FALSE);
